@@ -12,7 +12,8 @@ const AppContextProvider = (props) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [loading, setLoading] = useState(false);
 
-    const backendUrl = "http://localhost:4000/api";
+    const backendUrl = "https://saas-imagify.onrender.com/api";
+    // const backendUrl = "http://localhost:4000/api";
     const navigate = useNavigate();
 
 
