@@ -3,7 +3,7 @@ import { assets } from '../assets/assets'
 
 const TestimonialCard = ({ item }) => {
     return (
-        <div className='bg-white/20 p-8 rounded-2xl shadow-md border max-w-80 cursor-pointer hover:scale-[1.02]  transition-all'>
+        <div className='bg-white/20 p-8 rounded-2xl shadow-md border max-w-96 sm:max-w-80 cursor-pointer hover:scale-[1.02]  transition-all'>
             <div className='mx-auto flex flex-col items-center justify-center '>
                 <img src={item.image} alt="" width={40} className='rounded-full' />
                 <h1 className='text-xl font-semibold mt-3'>{item.name}</h1>

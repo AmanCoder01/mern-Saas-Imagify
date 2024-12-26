@@ -11,7 +11,7 @@ const Home = () => {
             <Header />
             <Steps />
             <Description />
-            {/* <Testimonial /> */}
+            <Testimonial />
             <GenerateButton />
         </div>
     )

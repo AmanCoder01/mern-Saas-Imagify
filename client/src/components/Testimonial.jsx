@@ -39,7 +39,7 @@ const Testimonial = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className='flex flex-col items-center justify-center my-15 py-12 md:px-[6.5rem]'>
+            className='flex overflow-hidden flex-col items-center justify-center my-15 py-12 md:px-[6.5rem]'>
             <h1 className='text-3xl sm:text-4xl font-semibold'>Customer testimonials</h1>
             <p className='text-gray-600  mt-2 mb-6'>What Our Users Are Saying</p>
 
