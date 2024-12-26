@@ -150,7 +150,7 @@ export const sendResetPassword = async (req, res) => {
 
         await user.save();
 
-        await sendPasswordResetEmail(email, `http://localhost:5173/verify-email/${resetToken}`);
+        await sendPasswordResetEmail(email, `https://imagify-ai-sigma.vercel.app/verify-email/${resetToken}`);
 
         return res.json({
             success: true,
