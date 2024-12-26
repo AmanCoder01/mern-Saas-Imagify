@@ -1,9 +1,16 @@
 import React from 'react'
-import { stepsData } from '../assets/assets'
+import { stepsData } from '../assets/assets';
+import { motion } from "motion/react"
+
 
 const Steps = () => {
     return (
-        <div className='mx-auto my-20'>
+        <motion.div
+            initial={{ opacity: 0.2, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className='mx-auto my-28'>
             <div className='text-center'>
                 <h1 className='text-3xl sm:text-4xl font-semibold'>How it works</h1>
                 <p className='text-gray-600  mt-2 mb-8'>Transform Words Into Stunning Images</p>
@@ -22,7 +29,7 @@ const Steps = () => {
                     ))
                 }
             </div>
-        </div>
+        </motion.div>
     )
 }
 
