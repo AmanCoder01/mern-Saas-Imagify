@@ -152,7 +152,9 @@ const Login = () => {
                         {sendedPassword && <button disabled className='py-2 w-full rounded-full bg-blue-600 mt-6  text-white'>
                             {
                                 loading ? <div className='flex items-center justify-center gap-3'>
-                                    <Spinner />
+                                    <div className='w-6 h-6'>
+                                        <Spinner />
+                                    </div>
                                     Sending...
                                 </div> : "Send Reset Link"
                             }
@@ -209,10 +211,14 @@ const Login = () => {
 
                             <button className='py-2 w-full rounded-full bg-blue-600  text-white'>{
                                 state === "Login" ? loading ? <div className='flex items-center justify-center gap-3'>
-                                    <Spinner />
+                                    <div className='w-6 h-6'>
+                                        <Spinner />
+                                    </div>
                                     Loging...
                                 </div> : "Login" : loading ? <div className='flex items-center justify-center gap-3'>
-                                    <Spinner />
+                                    <div className='w-6 h-6'>
+                                        <Spinner />
+                                    </div>
                                     Creating...
                                 </div> : "Create Account"}</button>
                             {state !== "Login" ?

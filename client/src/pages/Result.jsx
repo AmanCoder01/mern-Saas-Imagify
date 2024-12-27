@@ -7,9 +7,9 @@ import toast from "react-hot-toast"
 
 
 const Result = () => {
-    const { token, images, fetchImages, setImages, generateImage } = useContext(AppContext);
+    const { token, images, setImages, generateImage } = useContext(AppContext);
 
-    const [image, setImage] = useState(images.length > 0 ? images[0]?.imageUrl : assets.sample_img_1);
+    const [image, setImage] = useState(images[0]?.imageUrl || assets.sample_img_1);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState("");
@@ -24,11 +24,7 @@ const Result = () => {
         if (input) {
             setLoading(true);
             const image = await generateImage(input);
-            setImages([...images,
-            {
-                imageUrl: image
-            }
-            ])
+            setImages([...images, { imageUrl: image }]);
             setImage(image);
             setIsImageLoaded(true);
             setLoading(false);
@@ -62,13 +58,13 @@ const Result = () => {
         alert("Right-click is disabled on this image.");
     };
 
+
+
     useEffect(() => {
         if (!token) {
             navigate('/');
         }
-        fetchImages();
     }, [])
-
 
 
     return (

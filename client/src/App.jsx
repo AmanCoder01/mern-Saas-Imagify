@@ -11,17 +11,20 @@ import Spinner from './components/Spinner'
 import VerifyEmail from './pages/VerifyEmail'
 
 const App = () => {
-  const { loading, showLogin } = useContext(AppContext);
+  const { appLoading, showLogin } = useContext(AppContext);
 
-  if (loading) {
-    return <div className='flex justify-center items-center h-screen'>
-      <Spinner width={14} height={14} />
-    </div>
+  if (appLoading) {
+    return (
+      <div className='  flex justify-center items-center h-screen'>
+        <div className='w-14 h-14'>
+          <Spinner />
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className='px-4 sm:px-10 md:px-14 lg:px-28 min-h-screen bg-gradient-to-b from-teal-50 to-orange-50'>
-
       <Navbar />
       {showLogin && <Login />}
       <Routes>
@@ -30,7 +33,6 @@ const App = () => {
         <Route path="/result" element={<Result />} />
         <Route path="/verify-email/:resetToken" element={<VerifyEmail />} />
       </Routes>
-
       <Footer />
     </div>
   )

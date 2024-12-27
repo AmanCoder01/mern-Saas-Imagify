@@ -10,47 +10,52 @@ const AppContextProvider = (props) => {
     const [showLogin, setShowLogin] = useState(false);
     const [images, setImages] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token'));
-    const [loading, setLoading] = useState(false);
+    const [appLoading, setAppLoading] = useState(false);
 
-    const backendUrl = "https://saas-imagify.vercel.app/api";
-    // const backendUrl = "http://localhost:4000/api";
+    // const backendUrl = "https://saas-imagify.vercel.app/api";
+    const backendUrl = "http://localhost:4000/api";
     const navigate = useNavigate();
 
 
+
     const fetchImages = async () => {
+
         try {
             const { data } = await axios.get(`${backendUrl}/image/all`, {
                 headers: { token }
             })
+
+
 
             if (data.success) {
                 setImages(data.images);
             }
 
         } catch (error) {
-            console.error(error);
+            // console.error(error);
         }
     }
 
 
     const fetchUser = async () => {
-        setLoading(true);
+        setAppLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/user/profile`, {
                 headers: { token }
             })
 
+
+
             if (data.success) {
                 setUser(data.user);
-                setLoading(false);
+                setAppLoading(false);
             } else {
                 toast.error(data.message);
-                setLoading(false);
+                setAppLoading(false);
             }
 
         } catch (error) {
-            setLoading(false)
-            // console.error(error);
+            setAppLoading(false)
         }
     }
 
@@ -62,8 +67,11 @@ const AppContextProvider = (props) => {
                 headers: { token },
             })
 
+
+
             if (data.success) {
-                fetchUser();
+                setUser({ ...user, credits: user.credits - 1 });
+
                 return data.image;
             } else {
                 toast.error(data.message);
@@ -73,19 +81,18 @@ const AppContextProvider = (props) => {
             }
 
         } catch (error) {
-            console.error(error);
             toast.error(error.response.data.message);
         }
     }
 
 
     useEffect(() => {
-        fetchUser();
-    }, [token])
+        if (token) {
+            fetchUser();
+            fetchImages();
+        }
+    }, [token]);
 
-    useEffect(() => {
-        fetchImages();
-    }, [user])
 
     const value = {
         user,
@@ -96,11 +103,9 @@ const AppContextProvider = (props) => {
         token,
         setToken,
         generateImage,
-        fetchUser,
         images,
         setImages,
-        fetchImages,
-        loading
+        appLoading,
     }
 
     return (
