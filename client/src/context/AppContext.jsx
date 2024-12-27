@@ -12,8 +12,8 @@ const AppContextProvider = (props) => {
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [appLoading, setAppLoading] = useState(false);
 
-    // const backendUrl = "https://saas-imagify.vercel.app/api";
-    const backendUrl = "http://localhost:4000/api";
+    const backendUrl = "https://saas-imagify.vercel.app/api";
+    // const backendUrl = "http://localhost:4000/api";
     const navigate = useNavigate();
 
 
