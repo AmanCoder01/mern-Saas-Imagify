@@ -30,7 +30,7 @@ const Navbar = () => {
 
 
             <div className='flex items-center'>
-                <Link to="/posts" className='mr-6'>Posts</Link>
+                <Link to="/posts" className='mr-6 hidden max-sm:hidden'>Posts</Link>
                 {
                     user ? (
                         <div className='flex items-center gap-2 sm:gap-4'>
@@ -46,8 +46,9 @@ const Navbar = () => {
                                 <FaRegUser size={20} className='drop-shadow cursor-pointer' />
 
                                 <div className='absolute hidden group-hover:block  top-0 right-0 z-10 text-black rounded pt-10'>
-                                    <ul className='list-none m-0 p-2 bg-white rounded-md border text-sm'>
+                                    <ul className='list-none m-0 p-2 bg-white rounded-md border font-semibold'>
                                         <li className='py-2 px-2 cursor-pointer'><Link to="/profile">Profile</Link></li>
+                                        <li className='py-2 px-2 cursor-pointer'><Link to="/posts">Posts</Link></li>
                                         <li onClick={logoutHandler} className='py-2 px-2 cursor-pointer'><Link>Logout</Link></li>
                                     </ul>
                                 </div>
