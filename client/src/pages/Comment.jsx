@@ -75,7 +75,7 @@ const Comment = () => {
                 <PostCard post={post} />
             </div>
 
-            <div className="mt-4 min-w-full sm:min-w-[450px] mx-auto">
+            <div className="mt-4 w-full sm:w-[450px] mx-auto">
                 <h1 className="text-lg font-bold  text-gray-900 border-b-2 mb-2 border-gray-300">Comments</h1>
 
                 <form onSubmit={submitHandler}>
