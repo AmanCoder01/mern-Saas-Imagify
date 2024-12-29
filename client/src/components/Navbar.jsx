@@ -29,14 +29,17 @@ const Navbar = () => {
             </Link>
 
 
-            <div>
+            <div className='flex items-center'>
+                <Link to="/posts" className='mr-6'>Posts</Link>
                 {
                     user ? (
                         <div className='flex items-center gap-2 sm:gap-4'>
+
                             <button onClick={() => navigate("/pricing")} className='flex items-center gap-2 bg-blue-100 rounded-full px-4 sm:px-6 py-1.5 sm:py-3 hover:scale-105 transition-all duration-700'>
                                 <img src={assets.credit_star} className='w-5' alt="" />
                                 <p className='text-xs sm:text-sm font-medium text-gray-600'>Credit Left : {user.credits}</p>
                             </button>
+
 
                             <p className='text-gray-600 max-sm:hidden pl-4'>Hi, {user.name}</p>
                             <div className='relative group'>
@@ -44,7 +47,7 @@ const Navbar = () => {
 
                                 <div className='absolute hidden group-hover:block  top-0 right-0 z-10 text-black rounded pt-10'>
                                     <ul className='list-none m-0 p-2 bg-white rounded-md border text-sm'>
-                                        <li className='py-2 px-2 cursor-pointer'><Link>Profile</Link></li>
+                                        <li className='py-2 px-2 cursor-pointer'><Link to="/profile">Profile</Link></li>
                                         <li onClick={logoutHandler} className='py-2 px-2 cursor-pointer'><Link>Logout</Link></li>
                                     </ul>
                                 </div>

@@ -9,6 +9,8 @@ import Login from './components/Login'
 import { AppContext } from './context/AppContext'
 import Spinner from './components/Spinner'
 import VerifyEmail from './pages/VerifyEmail'
+import Profile from './pages/Profile'
+import Posts from './pages/Posts'
 
 const App = () => {
   const { appLoading, showLogin } = useContext(AppContext);
@@ -31,6 +33,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/pricing" element={<BuyCredit />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/posts" element={<Posts />} />
         <Route path="/verify-email/:resetToken" element={<VerifyEmail />} />
       </Routes>
       <Footer />

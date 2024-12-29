@@ -11,12 +11,27 @@ const AppContextProvider = (props) => {
     const [images, setImages] = useState([]);
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [appLoading, setAppLoading] = useState(false);
+    const [posts, setPosts] = useState([]);
 
-    const backendUrl = "https://saas-imagify.vercel.app/api";
-    // const backendUrl = "http://localhost:4000/api";
+    // const backendUrl = "https://saas-imagify.vercel.app/api";
+    const backendUrl = "http://localhost:4000/api";
     const navigate = useNavigate();
 
 
+
+    const fetchAllPosts = async () => {
+
+        try {
+            const { data } = await axios.get(`${backendUrl}/post/all`);
+
+
+            setPosts(data.posts);
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const fetchImages = async () => {
 
@@ -106,6 +121,9 @@ const AppContextProvider = (props) => {
         images,
         setImages,
         appLoading,
+        fetchAllPosts,
+        posts,
+        setPosts
     }
 
     return (
