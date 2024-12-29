@@ -71,6 +71,72 @@ export const getMyPosts = async (req, res) => {
 }
 
 
+export const commentOnPost = async (req, res) => {
+    try {
+
+        const { postId } = req.params;
+        const userId = req.userId;
+        const { text } = req.body;
+
+        if (!text) {
+            return res.status(400).json({
+                message: "Please enter a comment"
+            })
+        }
+
+        const posts = await Post.findOne({ _id: postId });
+
+        if (!posts) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
+        }
+
+        posts.comments.push({
+            user: userId,
+            text
+        })
+
+        await posts.save();
+
+        const post = await Post.findOne({ _id: postId })
+            .populate("comments.user", "name");
+        ;
+
+        return res.status(200).json({
+            message: "Comment done",
+            post
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
+export const getMyPostById = async (req, res) => {
+    try {
+
+        const { postId } = req.params;
+
+        const post = await Post.findOne({ _id: postId })
+            .populate("user", "name")
+            .populate("comments.user", "name");
+
+        return res.status(200).json({
+            post
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
 
 export const likeDislikePosts = async (req, res) => {
     try {

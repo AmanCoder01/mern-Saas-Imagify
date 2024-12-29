@@ -6,6 +6,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 
 const PostCard = ({ post }) => {
@@ -14,7 +15,7 @@ const PostCard = ({ post }) => {
     const [comments, setComments] = useState(post?.comments?.length);
     const [showLike, setShowLike] = useState(post?.likes?.includes(user?._id));
 
-
+    const navigate = useNavigate();
 
     const likePost = async () => {
 
@@ -43,11 +44,11 @@ const PostCard = ({ post }) => {
                     <FaRegUser size={20} />
                     <span className='ml-2 text-lg font-medium'>{post?.user.name}</span>
                 </div>
-                {post.user?._id === user?._id && <BsThreeDots size={24} className='cursor-pointer' />}
+                {post?.user?._id === user?._id && <BsThreeDots size={24} className='cursor-pointer' />}
             </div>
-            <p className=' px-2 pb-2'>{post.caption}</p>
+            <p className=' px-2 pb-2'>{post?.caption}</p>
 
-            <img src={post.content} width={400} className='object-contain rounded-md' alt="" />
+            <img src={post?.content} width={400} className='object-contain rounded-md' alt="" />
 
             <div className='py-2 flex items-center justify-between border-b-2 px-2 border-gray-300'>
                 <p className='flex items-center gap-1 '><BiSolidLike className='text-blue-500' />  {likes} </p>
@@ -63,7 +64,7 @@ const PostCard = ({ post }) => {
                         :
                         <p onClick={likePost} className='flex items-center gap-2 cursor-pointer'>  <BiLike size={20} /> Like</p>
                 }
-                <p className='flex items-center gap-2 cursor-pointer'>  <FaRegCommentDots size={20} /> Comments</p>
+                <p onClick={() => navigate(`/post/${post?._id}`)} className='flex items-center gap-2 cursor-pointer'>  <FaRegCommentDots size={20} /> Comments</p>
                 <p className='flex items-center gap-2 cursor-pointer'>  <FaRegShareFromSquare size={20} /> Share</p>
             </div>
         </div>

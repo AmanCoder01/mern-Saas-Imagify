@@ -11,6 +11,7 @@ import Spinner from './components/Spinner'
 import VerifyEmail from './pages/VerifyEmail'
 import Profile from './pages/Profile'
 import Posts from './pages/Posts'
+import Comment from './pages/Comment'
 
 const App = () => {
   const { appLoading, showLogin } = useContext(AppContext);
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/result" element={<Result />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/posts" element={<Posts />} />
+        <Route path="/post/:postId" element={<Comment />} />
         <Route path="/verify-email/:resetToken" element={<VerifyEmail />} />
       </Routes>
       <Footer />

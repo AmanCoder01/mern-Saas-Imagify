@@ -30,7 +30,7 @@ const Navbar = () => {
 
 
             <div className='flex items-center'>
-                <Link to="/posts" className='mr-6 hidden max-sm:hidden'>Posts</Link>
+                <Link to="/posts" className='mr-6 hidden sm:block'>Posts</Link>
                 {
                     user ? (
                         <div className='flex items-center gap-2 sm:gap-4'>

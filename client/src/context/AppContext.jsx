@@ -13,8 +13,8 @@ const AppContextProvider = (props) => {
     const [appLoading, setAppLoading] = useState(false);
     const [posts, setPosts] = useState([]);
 
-    const backendUrl = "https://saas-imagify.vercel.app/api";
-    // const backendUrl = "http://localhost:4000/api";
+    // const backendUrl = "https://saas-imagify.vercel.app/api";
+    const backendUrl = "http://localhost:4000/api";
     const navigate = useNavigate();
 
 
