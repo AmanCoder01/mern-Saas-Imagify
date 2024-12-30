@@ -101,7 +101,6 @@ export const commentOnPost = async (req, res) => {
 
         const post = await Post.findOne({ _id: postId })
             .populate("comments.user", "name");
-        ;
 
         return res.status(200).json({
             message: "Comment done",

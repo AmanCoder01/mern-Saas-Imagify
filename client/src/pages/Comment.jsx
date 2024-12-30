@@ -55,6 +55,7 @@ const Comment = () => {
 
     useEffect(() => {
         fetchPost();
+        window.scrollTo(0, 0);
     }, [])
 
 
@@ -93,10 +94,10 @@ const Comment = () => {
                 </form>
 
 
-                <div className='flex flex-col justify-center '>
+                <div className='flex flex-col justify-center'>
                     {
-                        comment.map((item, index) => (
-                            <div key={index} className="flex flex-col justify-between gap-2 rounded-md px-6 py-2 border-2 border-gray-200 mb-4">
+                        comment?.reverse().map((item, index) => (
+                            <div key={index} className="flex bg-gray-100 flex-col justify-between gap-2 rounded-md px-6 py-2 border-2 border-gray-200 mb-4">
                                 <div className='flex items-center gap-3'>
                                     <FaRegUser />
                                     <span className="text-gray-900">{item?.user?.name}</span>

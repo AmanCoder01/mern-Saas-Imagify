@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { FaRegCommentDots, FaRegUser } from "react-icons/fa";
 import { FaRegShareFromSquare } from "react-icons/fa6";
@@ -10,10 +10,11 @@ import { useNavigate } from 'react-router-dom';
 
 
 const PostCard = ({ post }) => {
-    const { user, backendUrl, token, setShowLogin } = useContext(AppContext);
+    const { user, backendUrl, token, setShowLogin, scrollPosition, setScrollPosition } = useContext(AppContext);
     const [likes, setLikes] = React.useState(post?.likes?.length);
     const [comments, setComments] = useState(post?.comments?.length);
     const [showLike, setShowLike] = useState(post?.likes?.includes(user?._id));
+
 
     const navigate = useNavigate();
 
@@ -37,6 +38,28 @@ const PostCard = ({ post }) => {
         }
     }
 
+
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(`https://imagify-ai-sigma.vercel.app/post/${post._id}`);
+            toast.success("Link copied to clipboard!");
+        } catch (err) {
+            console.error("Failed to copy text: ", err);
+            toast.error("Failed to copy text.");
+        }
+    };
+
+
+    const handlePostDetails = () => {
+        navigate(`/post/${post._id}`);
+        setScrollPosition(window.scrollY); // Save the current scroll position
+    }
+
+
+    useEffect(() => {
+        window.scrollTo(0, scrollPosition);
+    }, [scrollPosition]);
+
     return (
         <div className='border shadow-md p-1 rounded-md'>
             <div className='p-3 flex items-center justify-between gap-2'>
@@ -54,7 +77,7 @@ const PostCard = ({ post }) => {
                 <p className='flex items-center gap-1 '><BiSolidLike className='text-blue-500' />  {likes} </p>
                 <div className=''>
                     <span >  {comments} comments </span>
-                    <span className='pl-2'>  0 shares </span>
+                    {/* <span className='pl-2'>  0 shares </span> */}
                 </div>
             </div>
             <div className='p-3 flex items-center justify-between'>
@@ -64,8 +87,8 @@ const PostCard = ({ post }) => {
                         :
                         <p onClick={likePost} className='flex items-center gap-2 cursor-pointer'>  <BiLike size={20} /> Like</p>
                 }
-                <p onClick={() => navigate(`/post/${post?._id}`)} className='flex items-center gap-2 cursor-pointer'>  <FaRegCommentDots size={20} /> Comments</p>
-                <p className='flex items-center gap-2 cursor-pointer'>  <FaRegShareFromSquare size={20} /> Share</p>
+                <p onClick={handlePostDetails} className='flex items-center gap-2 cursor-pointer'>  <FaRegCommentDots size={20} /> Comments</p>
+                <p onClick={handleCopy} className='flex items-center gap-2 cursor-pointer'>  <FaRegShareFromSquare size={20} /> Share</p>
             </div>
         </div>
     )
