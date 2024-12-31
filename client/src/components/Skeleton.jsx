@@ -3,7 +3,7 @@ import React from 'react'
 const Skeleton = () => {
     return (
         <div className='min-h-screen flex justify-center mx-auto '>
-            <div class="border shadow-md p-1 rounded-md animate-pulse w-4/12">
+            <div class="border shadow-md p-1 rounded-md animate-pulse w-full  md:w-4/12">
                 <div class="p-3 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
                         <div class="h-5 w-5 bg-gray-200 rounded-full"></div>
