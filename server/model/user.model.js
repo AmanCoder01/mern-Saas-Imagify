@@ -18,6 +18,12 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 5
     },
+    generatedImages: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Images"
+        }
+    ],
     posts: [
         {
             type: mongoose.Schema.Types.ObjectId,

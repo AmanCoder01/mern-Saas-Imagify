@@ -1,7 +1,7 @@
 import Post from "../model/post.model.js";
 import User from "../model/user.model.js";
 
-
+// Create post 
 export const createPost = async (req, res) => {
     try {
         const { caption, content } = req.body;
@@ -16,9 +16,8 @@ export const createPost = async (req, res) => {
             content,
             user: userId
         })
-        // push post id to user model in posts array
 
-        const user = await User.findByIdAndUpdate(userId, {
+        await User.findByIdAndUpdate(userId, {
             $push: { posts: post._id }
         })
 
@@ -31,38 +30,22 @@ export const createPost = async (req, res) => {
     }
 }
 
-export const getAllPosts = async (req, res) => {
-    try {
 
-        // sort creted at -1
-        const posts = await Post.find()
-            .populate("user", "name")
-            .sort({ createdAt: -1 })
-
-
-        return res.status(200).json({
-            posts
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message
-        })
-    }
-}
-
+// Get My posts
 export const getMyPosts = async (req, res) => {
     try {
-
         const userId = req.userId;
 
         const posts = await Post.find({ user: userId })
             .populate("user", "name");
 
+        if (!posts) {
+            return res.status(404).json({ message: "No posts found" });
+        }
+
         return res.status(200).json({
             posts
         });
-
     } catch (error) {
         return res.status(500).json({
             message: error.message
@@ -71,6 +54,80 @@ export const getMyPosts = async (req, res) => {
 }
 
 
+// Get All Posts
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Post.find()
+            .populate("user", "name")
+            .sort({ createdAt: -1 })
+
+        return res.status(200).json({
+            posts
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
+// Get post by Id
+export const getMyPostById = async (req, res) => {
+    try {
+        const { postId } = req.params;
+
+        const post = await Post.findOne({ _id: postId })
+            .populate("user", "name")
+            .populate("comments.user", "name");
+
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
+        }
+
+        return res.status(200).json({
+            post
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
+// Delete my Post
+export const deletePostById = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { postId } = req.params;
+
+        const post = await Post.findByIdAndDelete(postId);
+
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
+        }
+
+        const user = await User.findByIdAndUpdate(userId, {
+            $pull: { posts: postId }
+        });
+
+        return res.status(200).json({
+            message: "Post deleted successfully"
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
+// Comment On posts
 export const commentOnPost = async (req, res) => {
     try {
 
@@ -115,28 +172,7 @@ export const commentOnPost = async (req, res) => {
 }
 
 
-export const getMyPostById = async (req, res) => {
-    try {
-
-        const { postId } = req.params;
-
-        const post = await Post.findOne({ _id: postId })
-            .populate("user", "name")
-            .populate("comments.user", "name");
-
-        return res.status(200).json({
-            post
-        });
-
-    } catch (error) {
-        return res.status(500).json({
-            message: error.message
-        })
-    }
-}
-
-
-
+// Like and Dislike post
 export const likeDislikePosts = async (req, res) => {
     try {
 
@@ -171,8 +207,6 @@ export const likeDislikePosts = async (req, res) => {
                 likes: posts.likes.length,
             });
         }
-
-
 
     } catch (error) {
         return res.status(500).json({

@@ -5,14 +5,13 @@ import uploadFile from "../helpers/upload.js";
 import Image from "../model/image.model.js";
 
 
+// Get All Images
 export const getAllImages = async (req, res) => {
     try {
         const userId = req.userId;
 
         const images = await Image.find({ userId })
-            .sort({
-                createdAt: -1
-            });
+            .sort({ createdAt: -1 });
 
         return res.json({
             success: true,
@@ -27,6 +26,8 @@ export const getAllImages = async (req, res) => {
     }
 }
 
+
+
 export const generateImage = async (req, res) => {
     try {
         const userId = req.userId;
@@ -37,9 +38,6 @@ export const generateImage = async (req, res) => {
         }
 
         const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
-        }
 
         if (user.creditBalance <= 0) {
             return res.json({ success: false, message: "Insufficient credit balance", credits: user.creditBalance });
@@ -60,17 +58,18 @@ export const generateImage = async (req, res) => {
         // Step 3: Upload the temporary file to Cloudinary
         const imageUrl = await uploadFile(base64Image);
 
-        const imageDb = await Image.create({
+        const image = await Image.create({
             userId: userId,
             imageUrl: imageUrl,
             prompt: prompt
         });
 
-        user.creditBalance--;
-        await user.save();
+        await User.findByIdAndUpdate(userId, {
+            $inc: { creditBalance: -1 },
+            $push: { images: image._id }
+        })
 
         return res.status(200).json({ success: true, credits: user.creditBalance, image: imageUrl });
-
 
     } catch (error) {
         return res.status(500).json({
