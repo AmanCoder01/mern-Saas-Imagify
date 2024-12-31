@@ -45,7 +45,6 @@ const Comment = () => {
             setPost(data.post);
             setComment(data.post.comments)
             setLoading(false);
-            console.log(data.post.comments);
 
         } catch (error) {
             setLoading(false);

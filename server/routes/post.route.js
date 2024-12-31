@@ -9,7 +9,7 @@ router.post("/create", verifyUserToken, createPost);
 router.get("/my", verifyUserToken, getMyPosts);
 router.get("/all", getAllPosts);
 router.get("/:postId", getMyPostById);
-router.delete("/postId", verifyUserToken, deletePostById);
+router.delete("/:postId", verifyUserToken, deletePostById);
 router.get("/like-dislike/:postId", verifyUserToken, likeDislikePosts);
 router.post("/comment/:postId", verifyUserToken, commentOnPost);
 
