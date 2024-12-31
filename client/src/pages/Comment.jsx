@@ -6,6 +6,7 @@ import PostCard from "../components/PostCard";
 import Spinner from '../components/Spinner';
 import toast from 'react-hot-toast';
 import { FaRegUser } from "react-icons/fa";
+import Skeleton from '../components/Skeleton';
 
 const Comment = () => {
 
@@ -61,11 +62,7 @@ const Comment = () => {
 
     if (loading) {
         return (
-            <div className='  flex justify-center items-center h-screen'>
-                <div className='w-14 h-14'>
-                    <Spinner />
-                </div>
-            </div>
+            <Skeleton />
         )
 
     }
