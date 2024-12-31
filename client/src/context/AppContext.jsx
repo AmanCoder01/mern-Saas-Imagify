@@ -20,7 +20,7 @@ const AppContextProvider = (props) => {
     const navigate = useNavigate();
 
 
-
+    //fetch
     const fetchAllPosts = async () => {
 
         try {
