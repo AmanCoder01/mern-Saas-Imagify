@@ -1,24 +1,35 @@
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "../config/cloudinary";
 
-
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
-const uploadFile = async (base64Image) => {
-
+const uploadBase64ToClodinary = async (base64Image) => {
     try {
         const result = await cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`, {
-            resource_type: "image", // Specify the resource type
+            resource_type: "image", // Specify the resource type as image
         });
-        console.log("Uploaded to Cloudinary:", result);
-        return result.secure_url;
+
+        return {
+            url: result.secure_url,
+            publicId: result.public_id,
+        };
     } catch (error) {
         console.log(error.message);
     }
 
 }
 
-export default uploadFile
+
+
+const uploadToClodinary = async (filePath) => {
+    try {
+        const result = await cloudinary.uploader.upload(filePath);
+
+        return {
+            url: result.secure_url,
+            publicId: result.public_id,
+        };
+    } catch (error) {
+        console.error("Error while uploading to cloudinary", error);
+        throw new Error("Error while uploading to cloudinary");
+    }
+}
+
+export default uploadBase64ToClodinary

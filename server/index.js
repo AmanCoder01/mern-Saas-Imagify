@@ -1,10 +1,10 @@
 import express from 'express'
 import cors from "cors"
 import "dotenv/config"
-import connectDb from './config/mongoDb.js';
 import userRouter from "./routes/user.route.js"
 import imageRouter from "./routes/image.route.js"
 import postRouter from "./routes/post.route.js"
+import connectDb from './database/mongoDb.js'
 
 const PORT = process.env.PORT || 4000;
 const app = express();
