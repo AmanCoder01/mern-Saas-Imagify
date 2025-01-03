@@ -34,8 +34,6 @@ const Posts = () => {
     };
 
 
-    // console.log(posts);
-
     useEffect(() => {
         fetchPosts(); // Initial fetch
 
