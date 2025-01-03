@@ -70,13 +70,13 @@ const PostCard = ({ post }) => {
 
     const handlePostDetails = () => {
         navigate(`/post/${post._id}`);
-        setScrollPosition(window.scrollY); // Save the current scroll position
+        // setScrollPosition(window.scrollY); // Save the current scroll position
     }
 
 
-    useEffect(() => {
-        window.scrollTo(0, scrollPosition);
-    }, [scrollPosition]);
+    // useEffect(() => {
+    //     window.scrollTo(0, scrollPosition);
+    // }, [scrollPosition]);
 
     return (
         <div className='border shadow-md p-1 rounded-md'>

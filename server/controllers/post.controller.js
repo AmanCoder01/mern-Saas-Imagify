@@ -57,13 +57,33 @@ export const getMyPosts = async (req, res) => {
 // Get All Posts
 export const getAllPosts = async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 3;
+        const skip = (page - 1) * limit;
+
+        const sortBy = req.query.sortBy || "createdAt";
+        const sortOrder = req.query.sortOrder === "asc" ? 1 : -1;
+        const totalPosts = await Post.countDocuments();
+        const totalPages = Math.ceil(totalPosts / limit);
+
+        const sortObj = {};
+        sortObj[sortBy] = sortOrder;
+
         const posts = await Post.find()
             .populate("user", "name")
-            .sort({ createdAt: -1 })
+            .sort(sortObj)
+            .skip(skip)
+            .limit(limit);
 
-        return res.status(200).json({
-            posts
-        });
+        if (posts) {
+            return res.status(200).json({
+                success: true,
+                currentPage: page,
+                totalPages: totalPages,
+                totalPosts: totalPosts,
+                data: posts
+            });
+        }
     } catch (error) {
         return res.status(500).json({
             message: error.message

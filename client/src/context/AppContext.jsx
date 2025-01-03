@@ -20,21 +20,6 @@ const AppContextProvider = (props) => {
     const navigate = useNavigate();
 
 
-    //fetch
-    const fetchAllPosts = async () => {
-
-        try {
-            const { data } = await axios.get(`${backendUrl}/post/all`);
-
-
-            setPosts(data.posts);
-
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     const fetchImages = async () => {
 
         try {
@@ -123,7 +108,6 @@ const AppContextProvider = (props) => {
         images,
         setImages,
         appLoading,
-        fetchAllPosts,
         posts,
         setPosts,
 
