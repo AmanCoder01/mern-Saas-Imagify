@@ -50,7 +50,7 @@ export const generateImage = async (req, res) => {
             $push: { images: image._id }
         })
 
-        return res.status(200).json({ success: true, credits: user.creditBalance, image: imageUrl });
+        return res.status(200).json({ success: true, credits: user.creditBalance, image: image.imageUrl });
 
     } catch (error) {
         return res.status(500).json({
