@@ -5,12 +5,17 @@ import { FaImages } from "react-icons/fa";
 import { BsFillFilePostFill } from "react-icons/bs";
 import { CiSaveDown1 } from "react-icons/ci";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 const Profile = () => {
     const [state, setState] = useState('images');
     const [loading, setLoading] = useState(false);
     const [images, setImages] = useState([]);
+    const [posts, setPosts] = useState([]);
+
+
+    const navigate = useNavigate();
 
     const { user, backendUrl, token } = useContext(AppContext);
 
@@ -29,9 +34,29 @@ const Profile = () => {
         }
     }
 
+    const fetchPosts = async () => {
+        try {
+            const { data } = await axios.get(`${backendUrl}/post/my`, {
+                headers: { token }
+            });
+
+            setPosts(data.posts);
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+
+
     useEffect(() => {
-        fetchGeneratedImages();
-    }, [])
+        if (state === "images") {
+            fetchGeneratedImages();
+        } else if (state === "posts") {
+            fetchPosts();
+        }
+    }, [state])
 
     return (
         <div className='min-h-screen'>
@@ -77,10 +102,26 @@ const Profile = () => {
                 <div className='grid grid-cols-3 gap-1'>
                     {state === "images" && (
                         images?.map((image) => (
-                            <div key={image._id} className=''>
+                            <div key={image._id} className='cursor-pointer relative group'>
                                 <img src={image.imageUrl} alt="" />
+
+                                <div className='absolute hidden group-hover:flex  top-20 left-0 right-0 items-center bottom-0 justify-center  '>
+                                    <button className='bg-blue-500 opacity-90 text-white px-3 py-2 rounded-full'>Post It</button>
+                                </div>
                             </div>
                         ))
+                    )}
+                    {state === "posts" && (
+                        posts?.map((post) => (
+                            <div key={post._id} className=''
+                                onClick={() => navigate(`/post/${post._id}`)}
+                            >
+                                <img src={post.content} alt="" />
+                            </div>
+                        ))
+                    )}
+                    {state === "saved" && (
+                        <div className=' mt-6'>This feature not live</div>
                     )}
                 </div>
             </div>
