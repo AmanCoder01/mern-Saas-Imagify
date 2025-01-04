@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema({
             ref: 'Post'
         }
     ],
+    saved: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Post'
+        }
+    ],
     resetPasswordToken: String,
     resetPasswordExpiresAt: Date,
 },
@@ -38,6 +44,6 @@ const userSchema = new mongoose.Schema({
     }
 )
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 export default User;

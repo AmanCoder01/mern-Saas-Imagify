@@ -12,6 +12,7 @@ import VerifyEmail from './pages/VerifyEmail'
 import Profile from './pages/Profile'
 import Posts from './pages/Posts'
 import Comment from './pages/Comment'
+import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
   const { appLoading, showLogin } = useContext(AppContext);
@@ -34,7 +35,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/pricing" element={<BuyCredit />} />
         <Route path="/result" element={<Result />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/post/:postId" element={<Comment />} />
         <Route path="/verify-email/:resetToken" element={<VerifyEmail />} />

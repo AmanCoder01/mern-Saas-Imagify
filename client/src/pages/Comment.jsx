@@ -10,7 +10,7 @@ import Skeleton from '../components/Skeleton';
 
 const Comment = () => {
 
-    const { backendUrl, token } = useContext(AppContext);
+    const { backendUrl, token, setShowLogin, user } = useContext(AppContext);
     const { postId } = useParams();
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -20,19 +20,21 @@ const Comment = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        if (!user) {
+            setShowLogin(true);
+            return;
+        }
         try {
             const { data } = await axios.post(`${backendUrl}/post/comment/${postId}`, { text }, {
                 headers: { token }
             });
 
-            console.log(data.post);
             setComment(data.post.comments);
             setText("");
             toast.success(data.message)
 
         } catch (error) {
-            toast.error(error.message);
-            console.log(error);
+            toast.error(error.response.data.message);
         }
     }
 

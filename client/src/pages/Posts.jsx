@@ -19,7 +19,7 @@ const Posts = () => {
         try {
             const response = await axios.get(`${backendUrl}/post/all`, { params: { page, limit: 2 } });
 
-            console.log(response.data);
+            // console.log(response.data);pos
 
             setPosts((prevPosts) => [...prevPosts, ...response.data.data]);
 

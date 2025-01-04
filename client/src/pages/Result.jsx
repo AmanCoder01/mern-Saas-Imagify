@@ -5,14 +5,15 @@ import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast"
 import PostToggle from '../components/PostToggle';
+import { PostContext } from '../context/PostContext';
 
 
 const Result = () => {
     const { token, images, setImages, generateImage } = useContext(AppContext);
+    const { postToggle, setPostToggle } = useContext(PostContext);
 
     const [image, setImage] = useState(images[0]?.imageUrl || assets.sample_img_1);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
-    const [post, setPost] = useState(false);
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState("");
 
@@ -113,12 +114,12 @@ const Result = () => {
                         <p onClick={() => setIsImageLoaded(false)} className='bg-transparent border border-zinc-900 text-black px-8 py-3 rounded-full cursor-pointer'>Generate Another</p>
                         <button type='button' onClick={downloadImage} className='bg-zinc-900 px-4 sm:px-10 py-3 rounded-full cursor-pointer'>Download</button>
 
-                        <button type='button' onClick={() => setPost(true)} className='bg-zinc-900 px-4 sm:px-10 py-3 rounded-full cursor-pointer'>Post to Public</button>
+                        <button type='button' onClick={() => setPostToggle(true)} className='bg-zinc-900 px-4 sm:px-10 py-3 rounded-full cursor-pointer'>Post to Public</button>
                     </div>
                 }
             </motion.form>
 
-            {post && <PostToggle image={image} setPost={setPost} />}
+            {postToggle && <PostToggle image={image} setPost={setPostToggle} />}
 
         </>
     )

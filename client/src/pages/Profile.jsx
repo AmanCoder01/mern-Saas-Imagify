@@ -1,62 +1,33 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaSpinner } from "react-icons/fa";
 import { AppContext } from '../context/AppContext';
 import { FaImages } from "react-icons/fa";
 import { BsFillFilePostFill } from "react-icons/bs";
 import { CiSaveDown1 } from "react-icons/ci";
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { PostContext } from '../context/PostContext';
+import PostToggle from '../components/PostToggle';
 
 
 const Profile = () => {
-    const [state, setState] = useState('images');
-    const [loading, setLoading] = useState(false);
-    const [images, setImages] = useState([]);
-    const [posts, setPosts] = useState([]);
+    const [imageUrl, setImageUrl] = useState();
 
+    const { user } = useContext(AppContext);
+    const { postToggle, setPostToggle, state, setState, fetchMyGeneratedImages, myGeneratedImages, fetchMyPosts, myPosts, fetchSavedPost, savedPosts, loading } = useContext(PostContext);
 
     const navigate = useNavigate();
 
-    const { user, backendUrl, token } = useContext(AppContext);
-
-    const fetchGeneratedImages = async () => {
-        try {
-            const { data } = await axios.get(`${backendUrl}/image/all`, {
-                headers: { token }
-            });
-
-            console.log(data);
-            setImages(data.images);
-
-        } catch (error) {
-            console.log(error);
-
-        }
-    }
-
-    const fetchPosts = async () => {
-        try {
-            const { data } = await axios.get(`${backendUrl}/post/my`, {
-                headers: { token }
-            });
-
-            setPosts(data.posts);
-
-        } catch (error) {
-            console.log(error);
-
-        }
-    }
-
-
-
     useEffect(() => {
         if (state === "images") {
-            fetchGeneratedImages();
+            fetchMyGeneratedImages();
         } else if (state === "posts") {
-            fetchPosts();
+            fetchMyPosts();
+        } else {
+            fetchSavedPost();
         }
     }, [state])
+
+
 
     return (
         <div className='min-h-screen'>
@@ -78,42 +49,53 @@ const Profile = () => {
 
             <div className='w-full md:max-w-lg mx-auto'>
                 <div className='flex items-center space-x-20  md:space-x-32 justify-center py-4 border px-6 md:px-12'>
-                    <div className='flex flex-col justify-center items-center group cursor-pointer'
+                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "images" && "text-blue-500"}`}
                         onClick={() => setState("images")}
                     >
                         <FaImages size={24} className='group-hover:opacity-60' />
-                        <p className='text-sm text-gray-900 group-hover:opacity-50'>Generated</p>
+                        <p className='text-sm group-hover:opacity-50'>Generated</p>
                     </div>
-                    <div className='flex flex-col justify-center items-center group cursor-pointer'
+                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "posts" && "text-blue-500"}`}
                         onClick={() => setState("posts")}
                     >
                         <BsFillFilePostFill size={21} className='group-hover:opacity-60' />
-                        <p className='text-sm text-gray-900 group-hover:opacity-50'>Posts</p>
+                        <p className='text-sm tgroup-hover:opacity-50'>Posts</p>
                     </div>
-                    <div className='flex flex-col justify-center items-center group cursor-pointer'
+                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "saved" && "text-blue-500"}`}
                         onClick={() => setState("saved")}
 
                     >
-                        <CiSaveDown1 size={24} className='group-hover:opacity-60' />
-                        <p className='text-sm text-gray-900 group-hover:opacity-50'>Saved</p>
+                        <CiSaveDown1 size={24} className='font-bold group-hover:opacity-60' />
+                        <p className='text-sm  group-hover:opacity-50'>Saved</p>
                     </div>
                 </div>
 
+                {
+                    loading && (
+                        <div className='flex justify-center mt-10'>
+                            <FaSpinner size={30} className='animate-spin' />
+                        </div>
+                    )
+                }
+
                 <div className='grid grid-cols-3 gap-1'>
                     {state === "images" && (
-                        images?.map((image) => (
+                        myGeneratedImages?.map((image) => (
                             <div key={image._id} className='cursor-pointer relative group'>
                                 <img src={image.imageUrl} alt="" />
 
                                 <div className='absolute hidden group-hover:flex  top-20 left-0 right-0 items-center bottom-0 justify-center  '>
-                                    <button className='bg-blue-500 opacity-90 text-white px-3 py-2 rounded-full'>Post It</button>
+                                    <button onClick={() => {
+                                        setPostToggle(true)
+                                        setImageUrl(image.imageUrl)
+                                    }} className='bg-blue-500 opacity-90 text-white px-3 py-1 md:py-2 rounded-full'>Post It</button>
                                 </div>
                             </div>
                         ))
                     )}
                     {state === "posts" && (
-                        posts?.map((post) => (
-                            <div key={post._id} className=''
+                        myPosts?.map((post) => (
+                            <div key={post._id} className='cursor-pointer'
                                 onClick={() => navigate(`/post/${post._id}`)}
                             >
                                 <img src={post.content} alt="" />
@@ -121,10 +103,19 @@ const Profile = () => {
                         ))
                     )}
                     {state === "saved" && (
-                        <div className=' mt-6'>This feature not live</div>
+                        savedPosts?.map((post) => (
+                            <div key={post._id} className='cursor-pointer'
+                                onClick={() => navigate(`/post/${post._id}`)}
+                            >
+                                <img src={post.content} alt="" />
+                            </div>
+                        ))
                     )}
                 </div>
             </div>
+
+            {postToggle && <PostToggle image={imageUrl} setPost={setPostToggle} />}
+
         </div>
     )
 }

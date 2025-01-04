@@ -13,6 +13,12 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    savedBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ],
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -38,6 +44,6 @@ const postSchema = new mongoose.Schema({
     }
 )
 
-const Post = mongoose.models.Post || mongoose.model("Post", postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 export default Post;

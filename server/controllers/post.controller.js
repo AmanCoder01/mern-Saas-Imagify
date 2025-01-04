@@ -37,7 +37,8 @@ export const getMyPosts = async (req, res) => {
         const userId = req.userId;
 
         const posts = await Post.find({ user: userId })
-            .populate("user", "name");
+            .populate("user", "name")
+            .sort({ createdAt: -1 })
 
         if (!posts) {
             return res.status(404).json({ message: "No posts found" });
@@ -139,6 +140,77 @@ export const deletePostById = async (req, res) => {
         return res.status(200).json({
             message: "Post deleted successfully"
         });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
+// saved posts
+export const savedPost = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        const savedPosts = await User.findById(userId)
+            .populate("saved", "content caption")
+
+
+        if (!savedPosts) {
+            return res.status(404).json({
+                message: "Nothing Saved Yet!"
+            });
+        }
+
+        return res.status(200).json({
+            data: savedPosts.saved
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+
+// Save  and Unsave Post
+export const saveUnsavePostById = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const { postId } = req.params;
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found"
+            });
+        }
+
+        const user = await User.findById(userId);
+
+        if (user.saved.includes(postId)) {
+            await User.findByIdAndUpdate(userId, {
+                $pull: { saved: postId }
+            })
+            await Post.findByIdAndUpdate(postId, {
+                $pull: { savedBy: userId }
+            })
+            return res.status(200).json({
+                message: "Post unsaved"
+            });
+        } else {
+            await User.findByIdAndUpdate(userId, {
+                $push: { saved: postId }
+            })
+            await Post.findByIdAndUpdate(postId, {
+                $push: { savedBy: userId }
+            })
+            return res.status(200).json({
+                message: "Post saved"
+            });
+        }
     } catch (error) {
         return res.status(500).json({
             message: error.message

@@ -7,11 +7,17 @@ import { AppContext } from '../context/AppContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { MdDelete } from "react-icons/md";
+import { CiSaveDown1 } from 'react-icons/ci';
+import { PostContext } from '../context/PostContext';
 
 
 const PostCard = ({ post }) => {
     const { user, setPosts, backendUrl, token, setShowLogin, scrollPosition, setScrollPosition } = useContext(AppContext);
+    const { saveUnsavePost } = useContext(PostContext);
+
     const [likes, setLikes] = React.useState(post?.likes?.length);
+    const [saved, setSaved] = useState(post?.savedBy?.includes(user?._id));
     const [comments, setComments] = useState(post?.comments?.length);
     const [showLike, setShowLike] = useState(post?.likes?.includes(user?._id));
 
@@ -40,6 +46,10 @@ const PostCard = ({ post }) => {
 
 
     const handleDelete = async () => {
+        if (!user) {
+            setShowLogin(true);
+            return;
+        }
         try {
             const { data } = await axios.delete(`${backendUrl}/post/${post._id}`, {
                 headers: { token }
@@ -85,15 +95,28 @@ const PostCard = ({ post }) => {
                     <FaRegUser size={20} />
                     <span className='ml-2 text-lg font-medium'>{post?.user.name}</span>
                 </div>
-                {post?.user?._id === user?._id &&
-                    <div className='relative cursor-pointer group'>
-                        <BsThreeDots size={24} className='cursor-pointer ' />
 
-                        <div className='absolute top-6 right-0 bg-gray-200 rounded-lg p-4 hidden group-hover:block'>
-                            <p onClick={handleDelete} className='font-semibold text-sm'>Delete</p>
+                <div className='relative cursor-pointer group'>
+                    <BsThreeDots size={24} className='cursor-pointer ' />
+
+
+                    <div className='absolute top-6 -right-2 bg-gray-100 rounded-lg p-4 hidden group-hover:block'>
+                        <div className='flex flex-col gap-3'>
+                            {post?.user?._id === user?._id && <p onClick={handleDelete} className='font-semibold text-sm inline-flex items-center gap-1.5 hover:text-red-600'><MdDelete size={16} color='red' /> Delete</p>}
+
+
+                            <p onClick={() => {
+                                if (!user) {
+                                    setShowLogin(true);
+                                    return;
+                                }
+                                saveUnsavePost(post._id)
+                                setSaved(!saved)
+                            }} className='font-semibold text-nowrap text-sm inline-flex items-center gap-1.5 hover:text-blue-500'><CiSaveDown1 color='blue' size={16} />           {saved ? "Un Save" : "Save"}</p>
                         </div>
                     </div>
-                }
+                </div>
+
             </div>
             <p className=' px-2 pb-2'>{post?.caption}</p>
 

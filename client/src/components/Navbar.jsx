@@ -48,7 +48,7 @@ const Navbar = () => {
                                 <div className='absolute hidden group-hover:block  top-0 right-0 z-10 text-black rounded pt-10'>
                                     <ul className='list-none m-0 p-2 bg-white rounded-md border font-semibold'>
                                         <li className='py-2 px-2 cursor-pointer'><Link to="/profile">Profile</Link></li>
-                                        <li className='py-2 px-2 cursor-pointer'><Link to="/posts">Posts</Link></li>
+                                        <li className='py-2 px-2 cursor-pointer block sm:hidden'><Link to="/posts">Posts</Link></li>
                                         <li onClick={logoutHandler} className='py-2 px-2 cursor-pointer'><Link>Logout</Link></li>
                                     </ul>
                                 </div>
