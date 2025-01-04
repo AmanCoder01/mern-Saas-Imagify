@@ -20,15 +20,14 @@ const PostToggle = ({ image, setPost }) => {
                 headers: { token }
             })
             setPost(false);
-            navigate("/posts")
-            setPosts([
-                ...posts,
-                data.post
-            ])
+            navigate(`/post/${data.post._id}`)
+
+            setPosts((prevPosts) => [...prevPosts, data.post])
+
             toast.success(data.message);
 
         } catch (error) {
-            console.log(error);
+            toast.error(error.response.data.message)
         }
     }
 

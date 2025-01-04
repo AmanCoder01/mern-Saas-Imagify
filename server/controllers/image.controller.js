@@ -47,7 +47,7 @@ export const generateImage = async (req, res) => {
 
         await User.findByIdAndUpdate(userId, {
             $inc: { creditBalance: -1 },
-            $push: { images: image._id }
+            $push: { generatedImages: image._id }
         })
 
         return res.status(200).json({ success: true, credits: user.creditBalance, image: image.imageUrl });

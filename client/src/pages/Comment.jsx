@@ -69,7 +69,7 @@ const Comment = () => {
     }
 
     return (
-        <div className='min-h-screen flex justify-center mx-auto flex-col'>
+        <div className='min-h-screen flex items-center py-4 md:py-8 flex-col'>
             <div className='flex justify-center items-center'>
                 <PostCard post={post} />
             </div>

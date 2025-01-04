@@ -17,11 +17,19 @@ const Posts = () => {
 
         setLoading(true);
         try {
-            const response = await axios.get(`${backendUrl}/post/all`, { params: { page, limit: 2 } });
+            const response = await axios.get(`${backendUrl}/post/all`, { params: { page, limit: 5 } });
 
-            // console.log(response.data);pos
 
-            setPosts((prevPosts) => [...prevPosts, ...response.data.data]);
+            setPosts((prevPosts) => {
+                const mergedPosts = [...prevPosts, ...response.data.data];
+
+                // Remove duplicates based on `_id`
+                const uniquePosts = mergedPosts.filter(
+                    (post, index, self) => index === self.findIndex((p) => p._id === post._id)
+                );
+
+                return uniquePosts;
+            });
 
             if (posts.length + response.data.data.length >= response.data.totalPosts) {
                 setHasMore(false);
@@ -34,14 +42,15 @@ const Posts = () => {
     };
 
 
-    useEffect(() => {
-        fetchPosts(); // Initial fetch
 
+    useEffect(() => {
+        fetchPosts();
     }, []);
 
     useEffect(() => {
-        if (page > 1) fetchPosts(); // Fetch only when page changes
+        if (page > 1) fetchPosts();
     }, [page]);
+
 
     const handelInfiniteScroll = async () => {
         // console.log("scrollHeight" + document.documentElement.scrollHeight);
@@ -64,9 +73,8 @@ const Posts = () => {
         return () => window.removeEventListener("scroll", handelInfiniteScroll);
     }, []);
 
-
     return (
-        <div className='min-h-screen py-6 md:py-10'>
+        <div className='min-h-screen py-4 md:py-8'>
             <div className='flex flex-col justify-center gap-6 items-center'>
 
                 {
