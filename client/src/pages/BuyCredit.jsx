@@ -24,7 +24,11 @@ const BuyCredit = () => {
             receipt: order.receipt,
             handler: async (response) => {
                 try {
-                    const { data } = await axios.post(`${backendUrl}/user/verify-pay`, response, { headers: { token } });
+                    const { data } = await axios.post(`${backendUrl}/user/verify-pay`, response, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
 
                     if (data.success) {
                         fetchUser();
@@ -53,7 +57,9 @@ const BuyCredit = () => {
 
             const { data } = await axios.post(`${backendUrl}/user/pay`, { planId },
                 {
-                    headers: { token }
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 }
             )
 

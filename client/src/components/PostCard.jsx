@@ -32,7 +32,9 @@ const PostCard = ({ post }) => {
         }
         try {
             const { data } = await axios.get(`${backendUrl}/post/like-dislike/${post._id}`, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
             setLikes(data.likes)
             setShowLike(!showLike);
@@ -52,7 +54,9 @@ const PostCard = ({ post }) => {
         }
         try {
             const { data } = await axios.delete(`${backendUrl}/post/${post._id}`, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
             toast.success(data.message);
             setPosts((prevState) => (

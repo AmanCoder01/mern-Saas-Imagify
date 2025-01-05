@@ -26,7 +26,9 @@ const Comment = () => {
         }
         try {
             const { data } = await axios.post(`${backendUrl}/post/comment/${postId}`, { text }, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             setComment(data.post.comments);

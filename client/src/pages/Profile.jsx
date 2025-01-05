@@ -72,7 +72,7 @@ const Profile = () => {
 
                 {
                     loading && (
-                        <div className='flex justify-center mt-10'>
+                        <div className='flex justify-center my-10'>
                             <FaSpinner size={30} className='animate-spin' />
                         </div>
                     )

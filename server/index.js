@@ -1,16 +1,16 @@
 import express from 'express'
-import cors from "cors"
 import "dotenv/config"
 import userRouter from "./routes/user.route.js"
 import imageRouter from "./routes/image.route.js"
 import postRouter from "./routes/post.route.js"
 import connectDb from './database/mongoDb.js'
+import { configureCors } from './config/corsConfig.js'
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(configureCors());
 
 
 app.use("/api/user", userRouter);

@@ -18,8 +18,11 @@ const PostContextProvider = ({ children }) => {
     const saveUnsavePost = async (postId) => {
         try {
             const { data } = await axios.get(`${backendUrl}/post/save-unsave/${postId}`,
-                { headers: { token } }
-            );
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
 
             toast.success(data.message)
 
@@ -33,9 +36,11 @@ const PostContextProvider = ({ children }) => {
     const fetchSavedPost = async () => {
         setLoading(true);
         try {
-            const { data } = await axios.get(`${backendUrl}/post/get-saved`,
-                { headers: { token } }
-            );
+            const { data } = await axios.get(`${backendUrl}/post/get-saved`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             setSavedPosts(data.data);
             setLoading(false);
@@ -52,7 +57,9 @@ const PostContextProvider = ({ children }) => {
 
         try {
             const { data } = await axios.get(`${backendUrl}/post/my`, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             setMyPosts(data.posts);
@@ -70,7 +77,9 @@ const PostContextProvider = ({ children }) => {
 
         try {
             const { data } = await axios.get(`${backendUrl}/image/all`, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             setMyGeneartedImages(data.images);

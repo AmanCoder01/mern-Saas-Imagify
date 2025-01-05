@@ -19,12 +19,15 @@ const AppContextProvider = (props) => {
     // const backendUrl = "http://localhost:4000/api";
     const navigate = useNavigate();
 
+    axios.defaults.withCredentials = true;
 
     const fetchImages = async () => {
 
         try {
             const { data } = await axios.get(`${backendUrl}/image/all`, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
 
 
@@ -43,7 +46,9 @@ const AppContextProvider = (props) => {
         setAppLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/user/profile`, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
 
 
@@ -66,7 +71,9 @@ const AppContextProvider = (props) => {
     const generateImage = async (prompt) => {
         try {
             const { data } = await axios.post(`${backendUrl}/image/generate-image`, { prompt }, {
-                headers: { token },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
 
 
