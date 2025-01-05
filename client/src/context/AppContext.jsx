@@ -15,8 +15,8 @@ const AppContextProvider = (props) => {
     const [scrollPosition, setScrollPosition] = useState(0);
 
 
-    const backendUrl = "https://saas-imagify.vercel.app/api";
-    // const backendUrl = "http://localhost:4000/api";
+    const backendUrl = "https://saas-imagify.vercel.app/api/v1";
+    // const backendUrl = "http://localhost:4000/api/v1";
     const navigate = useNavigate();
 
     axios.defaults.withCredentials = true;

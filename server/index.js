@@ -15,14 +15,15 @@ app.use(createBasicRateLimiter(100, 15 * 60 * 1000)); //100 request per 15 minut
 app.use(express.json());
 
 
+app.get("/", (req, res) => {
+    res.send("Hello its Working !");
+})
+
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/image", imageRouter);
 app.use("/api/v1/post", postRouter);
 
 
-app.get("/", (req, res) => {
-    res.send("Hello its Working !");
-})
 
 connectDb()
     .then(() => {
