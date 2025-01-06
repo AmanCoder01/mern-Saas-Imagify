@@ -49,68 +49,81 @@ const Profile = () => {
 
             <div className='w-full md:max-w-lg mx-auto'>
                 <div className='flex items-center space-x-20  md:space-x-32 justify-center py-4 border px-6 md:px-12'>
-                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "images" && "text-blue-500"}`}
+                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "images" && "text-blue-500 font-bold"}`}
                         onClick={() => setState("images")}
                     >
-                        <FaImages size={24} className='group-hover:opacity-60' />
-                        <p className='text-sm group-hover:opacity-50'>Generated</p>
+                        <FaImages size={24} className='group-hover:opacity-80' />
+                        <p className='text-sm group-hover:opacity-70'>Generated</p>
                     </div>
-                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "posts" && "text-blue-500"}`}
+                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "posts" && "text-blue-500 font-bold"}`}
                         onClick={() => setState("posts")}
                     >
-                        <BsFillFilePostFill size={21} className='group-hover:opacity-60' />
-                        <p className='text-sm tgroup-hover:opacity-50'>Posts</p>
+                        <BsFillFilePostFill size={21} className='group-hover:opacity-80' />
+                        <p className='text-sm tgroup-hover:opacity-70'>Posts</p>
                     </div>
-                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "saved" && "text-blue-500"}`}
+                    <div className={`flex flex-col justify-center items-center group cursor-pointer ${state === "saved" && "text-blue-500 font-bold"}`}
                         onClick={() => setState("saved")}
 
                     >
-                        <CiSaveDown1 size={24} className='font-bold group-hover:opacity-60' />
-                        <p className='text-sm  group-hover:opacity-50'>Saved</p>
+                        <CiSaveDown1 size={24} className='font-bold group-hover:opacity-80' />
+                        <p className='text-sm  group-hover:opacity-70'>Saved</p>
                     </div>
                 </div>
 
-                {
-                    loading && (
-                        <div className='flex justify-center my-10'>
+                <div className='grid grid-cols-3 gap-1'>
+
+                    {(state === "images") && (loading ?
+                        <div className='flex justify-center my-10 col-span-3'>
                             <FaSpinner size={30} className='animate-spin' />
                         </div>
-                    )
-                }
+                        :
+                        myGeneratedImages.length === 0 ?
+                            <div className='text-center text-gray-500 font-semibold col-span-3 flex mt-10 justify-center'>No Generated Images yet</div> :
+                            myGeneratedImages?.map((image) => (
+                                <div key={image._id} className='cursor-pointer relative group'>
+                                    <img src={image.imageUrl} alt="" />
 
-                <div className='grid grid-cols-3 gap-1'>
-                    {state === "images" && (
-                        myGeneratedImages?.map((image) => (
-                            <div key={image._id} className='cursor-pointer relative group'>
-                                <img src={image.imageUrl} alt="" />
-
-                                <div className='absolute hidden group-hover:flex  top-20 left-0 right-0 items-center bottom-0 justify-center  '>
-                                    <button onClick={() => {
-                                        setPostToggle(true)
-                                        setImageUrl(image.imageUrl)
-                                    }} className='bg-blue-500 opacity-90 text-white px-3 py-1 md:py-2 rounded-full'>Post It</button>
+                                    <div className='absolute hidden group-hover:flex  top-20 left-0 right-0 items-center bottom-0 justify-center  '>
+                                        <button onClick={() => {
+                                            setPostToggle(true)
+                                            setImageUrl(image.imageUrl)
+                                        }} className='bg-blue-500 opacity-90 text-white px-3 py-1 md:py-2 rounded-full'>Post It</button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))
-                    )}
-                    {state === "posts" && (
-                        myPosts?.map((post) => (
-                            <div key={post._id} className='cursor-pointer'
-                                onClick={() => navigate(`/post/${post._id}`)}
-                            >
-                                <img src={post.content} alt="" />
-                            </div>
-                        ))
-                    )}
-                    {state === "saved" && (
-                        savedPosts?.map((post) => (
-                            <div key={post._id} className='cursor-pointer'
-                                onClick={() => navigate(`/post/${post._id}`)}
-                            >
-                                <img src={post.content} alt="" />
-                            </div>
-                        ))
-                    )}
+                            )))
+                    }
+
+                    {(state === "posts") && (loading ?
+                        <div className='flex justify-center my-10 col-span-3'>
+                            <FaSpinner size={30} className='animate-spin' />
+                        </div>
+                        :
+                        myPosts.length === 0 ?
+                            <div className='text-center text-gray-500 font-semibold col-span-3 flex mt-10 justify-center'>No posts yet</div> :
+                            myPosts?.map((post) => (
+                                <div key={post._id} className='cursor-pointer'
+                                    onClick={() => navigate(`/post/${post._id}`)}
+                                >
+                                    <img src={post.content} alt="" />
+                                </div>
+                            )))
+                    }
+
+                    {(state === "saved") && (loading ?
+                        <div className='flex justify-center my-10 col-span-3'>
+                            <FaSpinner size={30} className='animate-spin' />
+                        </div>
+                        :
+                        savedPosts.length === 0 ?
+                            <div className='text-center text-gray-500 font-semibold col-span-3 flex mt-10 justify-center'>No saved post yet</div> :
+                            savedPosts?.map((post) => (
+                                <div key={post._id} className='cursor-pointer'
+                                    onClick={() => navigate(`/post/${post._id}`)}
+                                >
+                                    <img src={post.content} alt="" />
+                                </div>
+                            )))
+                    }
                 </div>
             </div>
 
