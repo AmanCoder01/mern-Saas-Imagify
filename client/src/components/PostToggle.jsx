@@ -20,7 +20,9 @@ const PostToggle = ({ image, setPost }) => {
                 content: image,
                 caption: caption
             }, {
-                headers: { token }
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
             setPost(false);
             navigate(`/post/${data.post._id}`)
