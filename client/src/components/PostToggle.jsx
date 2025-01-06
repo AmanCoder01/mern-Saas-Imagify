@@ -1,18 +1,21 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import { FaRegClosedCaptioning } from "react-icons/fa6";
 import { AppContext } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { assets } from '../assets/assets';
 
 const PostToggle = ({ image, setPost }) => {
     const [caption, setCaption] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { backendUrl, posts, setPosts, token } = useContext(AppContext);
+    const { backendUrl, setPosts, token } = useContext(AppContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             const { data } = await axios.post(`${backendUrl}/post/create`, {
                 content: image,
                 caption: caption
@@ -25,8 +28,10 @@ const PostToggle = ({ image, setPost }) => {
             setPosts((prevPosts) => [...prevPosts, data.post])
 
             toast.success(data.message);
+            setLoading(false);
 
         } catch (error) {
+            setLoading(false);
             toast.error(error.response.data.message)
         }
     }
@@ -49,8 +54,9 @@ const PostToggle = ({ image, setPost }) => {
 
                     </div>
 
-                    <button className='py-2 mt-6 w-full rounded-full bg-blue-600  text-white'>Post</button>
+                    <button className='py-2 mt-6 w-full rounded-full bg-blue-600  text-white'>{loading ? "Posting..." : "Post"}</button>
                 </form>
+                <img onClick={() => setPost(false)} src={assets.cross_icon} className='absolute top-5 right-5 cursor-pointer' alt="" />
             </div>
         </div>
     )
