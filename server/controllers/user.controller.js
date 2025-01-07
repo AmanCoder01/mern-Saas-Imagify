@@ -89,6 +89,7 @@ export const loginUser = async (req, res) => {
 }
 
 
+//get user details
 export const userProfile = async (req, res) => {
     try {
         const userId = req.userId;

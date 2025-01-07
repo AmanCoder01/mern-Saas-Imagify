@@ -14,7 +14,3 @@ router.post("/verify-pay", verifyPayment);
 
 
 export default router
-
-
-// http://localhost:4000/api/user/register
-// http://localhost:4000/api/user/login

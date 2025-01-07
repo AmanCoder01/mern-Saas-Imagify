@@ -24,7 +24,6 @@ app.use("/api/v1/image", imageRouter);
 app.use("/api/v1/post", postRouter);
 
 
-
 connectDb()
     .then(() => {
         app.listen(PORT, () => {

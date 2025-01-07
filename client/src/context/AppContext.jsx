@@ -29,9 +29,6 @@ const AppContextProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                 },
             })
-
-
-
             if (data.success) {
                 setImages(data.images);
             }
@@ -50,8 +47,6 @@ const AppContextProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                 },
             })
-
-
 
             if (data.success) {
                 setUser(data.user);
