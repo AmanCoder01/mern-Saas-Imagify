@@ -27,7 +27,7 @@ export const registerUser = async (req, res) => {
             password: hashedPassword
         })
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
         return res.status(201).json({
             success: true,
@@ -68,7 +68,7 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({ success: false, message: "Invalid password" });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
 
         return res.status(201).json({
             success: true,
